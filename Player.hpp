@@ -2,7 +2,7 @@
 #define PLAYER_HPP
  
 #include <SFML/Graphics.hpp>
-#include "Animation.hpp"
+#include "AnimationManager.hpp"
 
 class Player : public sf::Sprite {
 public:
@@ -18,14 +18,12 @@ public:
 
 
 private:
+    AnimationManager _animManager;
     sf::Texture* _spriteSheet;
-    Animation _animations[4];
-    sf::Time _frameTime;
     sf::Time _currentTime;
     sf::Time _jumpTime;
-    unsigned _currentAnim;
-    unsigned _currentFrame;
     bool _isGrounded;
+    bool _isLeft;
 }; 
  
 #endif

@@ -6,7 +6,8 @@ Player::Player(sf::Time frameTime)
     _spriteSheet(nullptr),
     _currentAnim(1),
     _currentFrame(0),
-    _isGrounded(true)
+    _isGrounded(true),
+    _isLeft(false)
 {
     _currentTime = sf::seconds(0.0f);
 
@@ -20,16 +21,15 @@ Player::Player(sf::Time frameTime)
     _animations[1].addFrame(sf::IntRect(320, 0, 80, 80));
     _animations[1].addFrame(sf::IntRect(400, 0, 80, 80));
 
-    /* Left Jump? animation 
-    _animations[2].addFrame();
-    _animations[2].addFrame();
-    _animations[2].addFrame();
+    /* Left Move animation */
+    _animations[2].addFrame(sf::IntRect(160, 80, 80, 80));
+    _animations[2].addFrame(sf::IntRect(80, 80, 80, 80));
+    _animations[2].addFrame(sf::IntRect(160, 80, 80, 80));
 
-    /* Right Jump? animation
-    _animations[1].addFrame();
-    _animations[1].addFrame();
-    _animations[1].addFrame();
-    */
+    /* Right Move animation */
+    _animations[3].addFrame(sf::IntRect(240, 80, 80, 80));
+    _animations[3].addFrame(sf::IntRect(320, 80, 80, 80));
+    _animations[3].addFrame(sf::IntRect(240, 80, 80, 80));
 }
 
 void Player::setSpriteSheet(sf::Texture* texture)
@@ -42,8 +42,8 @@ void Player::moveLeft()
 {
     if(_isGrounded)
     {
+        _isLeft = true;
         move(sf::Vector2f(-20, 0));
-        _currentAnim = 0;
     }
 }
 
@@ -51,8 +51,8 @@ void Player::moveRight()
 {
     if(_isGrounded)
     {
+        _isLeft = false;
         move(sf::Vector2f(20, 0));
-        _currentAnim = 1;
     }
 }
 
@@ -70,9 +70,12 @@ void Player::moveUp()
 
 void Player::jump()
 {
-    _isGrounded = false;
-    _jumpTime = _currentTime;
-    move(sf::Vector2f(0, -5));
+    if(!_isGrounded)
+    {
+        _isGrounded = false;
+        _jumpTime = _currentTime;
+        move(sf::Vector2f(0, -5));
+    }
 }
 
 void Player::update(sf::Time deltaTime)
@@ -80,6 +83,7 @@ void Player::update(sf::Time deltaTime)
     _currentTime += deltaTime;
     _jumpTime += deltaTime;
 
+    //ogarnij AnimationManager
     if(_currentTime >= _frameTime)
     {
         _currentTime = sf::microseconds(_currentTime.asMicroseconds() % _frameTime.asMicroseconds());
