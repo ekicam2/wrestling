@@ -3,13 +3,19 @@
 
 class Animation {
 public: 
-    void addFrame(sf::IntRect frame);
-    void removeFrame(std::size_t id);
-    sf::IntRect getFrame(std::size_t id);
+    Animation(const sf::Texture& spriteSheet);
+    Animation(const sf::Texture* spriteSheet);
+
     void setSpriteSheet(const sf::Texture& spriteSheet);
+    void setSpriteSheet(const sf::Texture* spriteSheet);
+
+    void addFrame(const sf::IntRect& frame);
+    void removeFrame(unsigned id);
+    sf::IntRect getFrame(unsigned id);
     std::size_t getSize() const;
 
 private: 
     std::vector<sf::IntRect> _frames;
+    unsigned _currentFrame;
     const sf::Texture* _spriteSheet;
 }; 

@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include <vector>
 #include "Animation.hpp"
@@ -7,16 +6,19 @@
 class AnimationManager 
 {
 public:
-    void setFrameTime(sf::Time frameTime);
-    void update(sf::Time deltaTime);
-    Animation& getAnimation(unsigned id);
-    unsigned getCurrentFrame() const;
-    sf::Time getFrameTime() const;    
+    AnimationManager(const sf::Time& frameTime)
+    void setFrameTime(const sf::Time& frameTime);
+    void update(const sf::Time& deltaTime);
+
+    void addAnimation(const Animation& animation);
     std::vector<Animation>& getAnimations() const; 
+    Animation& getAnimation(unsigned id) const;
+
+    sf::Time getFrameTime() const;    
+    unsigned getCurrentFrame() const;
 
 private: 
     std::vector<Animation> _animations;
     sf::Time _frameTime;
-    unsigned _currentAnimation;
-    unsigned _currentFrame;
+    std::vector<Animation>::iterator _currentAnimation;
 }; 
